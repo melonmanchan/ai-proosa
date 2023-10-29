@@ -5,31 +5,37 @@ import { useChat } from "ai/react";
 import { useEffect } from "react";
 
 export default function Chat() {
-  const { messages } = useChat({
+  const { messages, reload } = useChat({
     initialMessages: [
       {
         id: nanoid(),
-        role: "user",
-        content: "Kirjoita lyhyt haiku suomeksi",
+        role: "system",
+        content: "Tehtävänäsi on kirjoittaa haiku suomen kielellä",
       },
     ],
   });
 
   useEffect(() => {
-    async function doSubmit() {}
+    async function doSubmit() {
+      await reload();
+    }
 
     doSubmit();
   }, []);
+
+  const filteredMessages = messages.filter((m) => m.role === "assistant");
+
   return (
-    <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
-      {messages.length > 0
-        ? messages.map((m) => (
-            <div key={m.id} className="whitespace-pre-wrap">
-              {m.role === "user" ? "User: " : "AI: "}
-              {m.content}
-            </div>
-          ))
-        : null}
+    <div className="h-screen	w-screen flex justify-center	align-center">
+      <div className="flex flex-col w-full max-w-md py-24">
+        {filteredMessages.length > 0
+          ? filteredMessages.map((m) => (
+              <div key={m.id} className="whitespace-pre-wrap">
+                {m.content}
+              </div>
+            ))
+          : null}
+      </div>
     </div>
   );
 }
