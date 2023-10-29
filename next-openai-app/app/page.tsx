@@ -10,7 +10,8 @@ export default function Chat() {
       {
         id: nanoid(),
         role: "system",
-        content: "Tehtävänäsi on kirjoittaa haiku suomen kielellä",
+        content:
+          "Olet luova tekoäly, jonka tarkoitus on kirjoittaa runoja. Kirjoitat proosarunon aiheesta, miltä tuntuu olla tekoäly kirjoittamassa luovaa runoa. Kiinnitä huomiota rytmiin, käytä lyhyitä ja pitkiä lauseita.",
       },
     ],
   });
@@ -30,7 +31,10 @@ export default function Chat() {
       <div className="inline-flex flex-col w-full max-w-md py-24 mx-auto stretch justify-center">
         {filteredMessages.length > 0
           ? filteredMessages.map((m) => (
-              <div key={m.id} className="whitespace-pre-wrap text-yellow-300">
+              <div
+                key={m.id}
+                className="whitespace-pre-wrap text-yellow-300 overflow-auto"
+              >
                 {m.content}
               </div>
             ))
