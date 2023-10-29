@@ -1,28 +1,35 @@
-'use client';
+"use client";
 
-import { useChat } from 'ai/react';
+import { nanoid } from "ai";
+import { useChat } from "ai/react";
+import { useEffect } from "react";
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit, data } = useChat();
+  const { messages } = useChat({
+    initialMessages: [
+      {
+        id: nanoid(),
+        role: "user",
+        content: "Kirjoita lyhyt haiku suomeksi",
+      },
+    ],
+  });
+
+  useEffect(() => {
+    async function doSubmit() {}
+
+    doSubmit();
+  }, []);
   return (
     <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
       {messages.length > 0
-        ? messages.map(m => (
+        ? messages.map((m) => (
             <div key={m.id} className="whitespace-pre-wrap">
-              {m.role === 'user' ? 'User: ' : 'AI: '}
+              {m.role === "user" ? "User: " : "AI: "}
               {m.content}
             </div>
           ))
         : null}
-
-      <form onSubmit={handleSubmit}>
-        <input
-          className="fixed bottom-0 w-full max-w-md p-2 mb-8 border border-gray-300 rounded shadow-xl"
-          value={input}
-          placeholder="Say something..."
-          onChange={handleInputChange}
-        />
-      </form>
     </div>
   );
 }
