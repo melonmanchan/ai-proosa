@@ -30,7 +30,7 @@ export default function Chat() {
       <div className="inline-flex flex-col w-full max-w-md py-24 mx-auto stretch justify-center">
         {filteredMessages.length > 0
           ? filteredMessages.map((m) => (
-              <div key={m.id} className="whitespace-pre-wrap">
+              <div key={m.id} className="whitespace-pre-wrap text-yellow-300">
                 {m.content}
               </div>
             ))
