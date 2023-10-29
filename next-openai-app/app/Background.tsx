@@ -2,7 +2,8 @@
 
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
-
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
@@ -11,13 +12,25 @@ import { BadTVShader } from "./shaders/tv-shader";
 import { StaticShader } from "./shaders/static-shader";
 import { FilmShader } from "./shaders/film-shader";
 
-function init(canvas: HTMLCanvasElement) {
-  console.log(canvas, THREE);
+const loader = new GLTFLoader();
+
+async function loadModel(filename: string) {
+  const model = await loader.loadAsync(filename);
+  return model;
+}
+
+async function init(canvas: HTMLCanvasElement) {
+  THREE.ColorManagement.enabled = false;
+  const eyeBallModel = await loadModel("./eye_blend.glb");
+
   const scene = new THREE.Scene();
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({ color: "black" });
-  const cube = new THREE.Mesh(geometry, material);
-  //  scene.add(cube);
+
+  eyeBallModel.scene.scale.set(0.01, 0.01, 0.01);
+
+  eyeBallModel.scene.rotation.x = Math.PI / 2;
+  eyeBallModel.scene.rotation.y = 0;
+
+  scene.add(eyeBallModel.scene);
 
   const clock = new THREE.Clock();
 
@@ -28,11 +41,17 @@ function init(canvas: HTMLCanvasElement) {
     1000
   );
 
+  const directionalLight = new THREE.DirectionalLight("white", 1);
+  scene.add(directionalLight);
+
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 
+  renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
   renderer.setClearColor("blue");
 
   renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
 
   const composer = new EffectComposer(renderer);
 
@@ -66,13 +85,17 @@ function init(canvas: HTMLCanvasElement) {
   camera.position.x = 0;
   camera.position.y = 5;
 
-  camera.lookAt(cube.position);
-
   camera.updateProjectionMatrix();
+
+  controls.update();
+
+  controls.enableZoom = true;
 
   const render = function () {
     const delta = clock.getDelta();
     requestAnimationFrame(render);
+
+    controls.update();
 
     badTVPass.uniforms["time"].value = delta;
     staticPass.uniforms["time"].value = delta;
