@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 
@@ -14,7 +15,15 @@ import { BadTVShader } from "./shaders/tv-shader";
 import { StaticShader } from "./shaders/static-shader";
 import { FilmShader } from "./shaders/film-shader";
 
+const dracoLoader = new DRACOLoader();
+
+dracoLoader.setDecoderConfig({ type: "js" });
+dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
+
+dracoLoader.preload();
+
 const loader = new GLTFLoader();
+loader.setDRACOLoader(dracoLoader);
 
 async function loadModel(filename: string) {
   const model = await loader.loadAsync(filename);
@@ -24,7 +33,8 @@ async function loadModel(filename: string) {
 async function init(canvas: HTMLCanvasElement) {
   THREE.ColorManagement.enabled = false;
   const [eyeBallModel, moonModel] = await Promise.all([
-    loadModel("./eye_blend.glb"),
+    // loadModel("./eye_blend.glb"),
+    loadModel("./eye_blend_optimized.glb"),
     loadModel("./kuu2.glb"),
   ]);
 
@@ -56,16 +66,10 @@ async function init(canvas: HTMLCanvasElement) {
   moonModel.scene.children[0].material.color.g = 10;
 
   // Iris is red
-  eyeBallModel.scene.children[0].children[0].children[0].children[0].children[0].material.color.r = 100;
-
-  eyeBallModel.scene.children[0].children[0].children[0].children[1].children[0].material.color.r = 5;
-  eyeBallModel.scene.children[0].children[0].children[0].children[1].children[0].material.color.g = 6;
-  eyeBallModel.scene.children[0].children[0].children[0].children[1].children[0].material.color.b = 6;
-
-  console.log(
-    eyeBallModel.scene.children[0].children[0].children[0].children[1]
-      .children[0].material
-  );
+  eyeBallModel.scene.children[0].material.color.r = 100;
+  eyeBallModel.scene.children[1].material.color.r = 3;
+  eyeBallModel.scene.children[1].material.color.g = 3;
+  eyeBallModel.scene.children[1].material.color.b = 3;
 
   const directionalLight = new THREE.DirectionalLight("white", 1);
   scene.add(directionalLight);
