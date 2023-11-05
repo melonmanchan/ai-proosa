@@ -25,13 +25,13 @@ export default function Chat() {
     ],
   });
 
-  useEffect(() => {
-    async function doSubmit() {
-      await reload();
-    }
-
-    doSubmit();
-  }, []);
+  //  useEffect(() => {
+  //    async function doSubmit() {
+  //      await reload();
+  //    }
+  //
+  //    doSubmit();
+  //  }, []);
 
   useEffect(() => {
     audioRef.current?.play();
@@ -58,7 +58,7 @@ export default function Chat() {
                   key={m.id}
                   className="whitespace-pre-wrap text-yellow-300 overflow-auto"
                 >
-                  {m.content.replaceAll("i", "1").replaceAll("o", "0")}
+                  {m.content}
                 </div>
               ))
             : null}

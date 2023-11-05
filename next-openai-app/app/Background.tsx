@@ -44,7 +44,9 @@ async function init(canvas: HTMLCanvasElement) {
   const directionalLight = new THREE.DirectionalLight("white", 1);
   scene.add(directionalLight);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ canvas });
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
   renderer.setClearColor("blue");
@@ -88,22 +90,32 @@ async function init(canvas: HTMLCanvasElement) {
   camera.updateProjectionMatrix();
 
   controls.update();
-
   controls.enableZoom = true;
 
-  const render = function () {
-    const delta = clock.getDelta();
-    requestAnimationFrame(render);
+  const radius = 2.5; // Radius of the circle
+  const speed = 0.01; // Speed of rotation
 
+  let angle = 0;
+
+  const render = function () {
+    requestAnimationFrame(render);
+    const delta = clock.getDelta();
+
+    composer.render(delta);
     controls.update();
 
     badTVPass.uniforms["time"].value = delta;
     staticPass.uniforms["time"].value = delta;
     filmPass.uniforms["time"].value = delta;
 
+    // Update the angle
+    angle += speed;
+
+    eyeBallModel.scene.position.x = radius * Math.cos(angle);
+    eyeBallModel.scene.position.y = radius * Math.sin(angle);
+
     eyeBallModel.scene.rotation.y += 0.01;
-    eyeBallModel.scene.rotation.z += Math.sin(delta * 0.5);
-    composer.render(delta);
+    eyeBallModel.scene.rotation.z += Math.sin(delta * 0.2);
   };
 
   render();
