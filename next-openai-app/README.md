@@ -40,3 +40,8 @@ To learn more about OpenAI, Next.js, and the Vercel AI SDK take a look at the fo
 - [Vercel AI Playground](https://play.vercel.ai)
 - [OpenAI Documentation](https://platform.openai.com/docs) - learn about OpenAI features and API.
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+
+# Attributions
+
+Background image: Freepik.com
+<a href="https://www.freepik.com/free-vector/cute-stars-pattern-kids_2841791.htm#query=cartoon%20star%20background&position=2&from_view=keyword&track=ais">Image by starline</a> on Freepik

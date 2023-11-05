@@ -21,6 +21,7 @@ dracoLoader.setDecoderConfig({ type: "js" });
 dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
 
 dracoLoader.preload();
+const textureLoader = new THREE.TextureLoader();
 
 const loader = new GLTFLoader();
 loader.setDRACOLoader(dracoLoader);
@@ -38,7 +39,14 @@ async function init(canvas: HTMLCanvasElement) {
     loadModel("./kuu2.glb"),
   ]);
 
+  const bg = await textureLoader.loadAsync("./star-pattern.jpg");
+  console.log(bg);
+  bg.wrapS = THREE.RepeatWrapping;
+  bg.wrapT = THREE.RepeatWrapping;
+
   const scene = new THREE.Scene();
+
+  scene.background = bg;
 
   eyeBallModel.scene.scale.set(0.01, 0.01, 0.01);
 
@@ -62,14 +70,14 @@ async function init(canvas: HTMLCanvasElement) {
   );
 
   // This also controls intensity of glow
-  moonModel.scene.children[0].material.color.r = 10;
-  moonModel.scene.children[0].material.color.g = 10;
+  (moonModel.scene.children[0] as any).material.color.r = 15;
+  (moonModel.scene.children[0] as any).material.color.g = 15;
 
   // Iris is red
-  eyeBallModel.scene.children[0].material.color.r = 100;
-  eyeBallModel.scene.children[1].material.color.r = 3;
-  eyeBallModel.scene.children[1].material.color.g = 3;
-  eyeBallModel.scene.children[1].material.color.b = 3;
+  (eyeBallModel.scene.children[0] as any).material.color.r = 100;
+  (eyeBallModel.scene.children[1] as any).material.color.r = 5;
+  (eyeBallModel.scene.children[1] as any).material.color.g = 5;
+  (eyeBallModel.scene.children[1] as any).material.color.b = 5;
 
   const directionalLight = new THREE.DirectionalLight("white", 1);
   scene.add(directionalLight);
@@ -92,8 +100,8 @@ async function init(canvas: HTMLCanvasElement) {
     0.85
   );
   // Ths controls the intensity of the glow
-  bloomPass.threshold = 1;
-  bloomPass.strength = 0.8; //intensity of glow
+  bloomPass.threshold = 1.5;
+  bloomPass.strength = 1; //intensity of glow
   bloomPass.radius = 0;
 
   const renderPass = new RenderPass(scene, camera);
