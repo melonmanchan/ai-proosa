@@ -21,7 +21,10 @@ async function loadModel(filename: string) {
 
 async function init(canvas: HTMLCanvasElement) {
   THREE.ColorManagement.enabled = false;
-  const eyeBallModel = await loadModel("./eye_blend.glb");
+  const [eyeBallModel, moonModel] = await Promise.all([
+    loadModel("./eye_blend.glb"),
+    loadModel("./kuu2.glb"),
+  ]);
 
   const scene = new THREE.Scene();
 
@@ -30,7 +33,12 @@ async function init(canvas: HTMLCanvasElement) {
   eyeBallModel.scene.rotation.x = Math.PI / 2;
   eyeBallModel.scene.rotation.y = 0;
 
+  moonModel.scene.scale.set(0.8, 0.8, 0.8);
+  moonModel.scene.rotation.x = Math.PI / 2;
+  moonModel.scene.rotation.z = 6;
+
   scene.add(eyeBallModel.scene);
+  scene.add(moonModel.scene);
 
   const clock = new THREE.Clock();
 
@@ -93,9 +101,10 @@ async function init(canvas: HTMLCanvasElement) {
   controls.enableZoom = true;
 
   const radius = 4; // Radius of the circle
-  const speed = 0.002; // Speed of rotation
+  const speed = 0.003; // Speed of rotation
 
   let angle = 0;
+  let moonAngle = 2;
 
   const render = function () {
     requestAnimationFrame(render);
@@ -110,12 +119,19 @@ async function init(canvas: HTMLCanvasElement) {
 
     // Update the angle
     angle += speed;
+    moonAngle += speed;
 
+    // Eye
     eyeBallModel.scene.position.x = radius * Math.cos(angle);
     eyeBallModel.scene.position.y = radius * Math.sin(angle);
-
     eyeBallModel.scene.rotation.y += 0.005;
     eyeBallModel.scene.rotation.x += 0.001;
+
+    // Moon
+    moonModel.scene.position.x = radius * Math.cos(moonAngle);
+    moonModel.scene.position.y = radius * Math.sin(moonAngle);
+    moonModel.scene.rotation.z += 0.005;
+    moonModel.scene.rotation.x += 0.001;
   };
 
   render();
