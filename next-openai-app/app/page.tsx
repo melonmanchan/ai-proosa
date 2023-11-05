@@ -32,9 +32,12 @@ export default function Chat() {
   //
   //    doSubmit();
   //  }, []);
+  //
 
   useEffect(() => {
-    audioRef.current?.play();
+    window.addEventListener("click", (e) => {
+      audioRef.current?.play();
+    });
   }, []);
 
   const filteredMessages = messages.filter((m) => m.role === "assistant");

@@ -5,6 +5,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
+
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 
@@ -49,12 +51,17 @@ async function init(canvas: HTMLCanvasElement) {
     1000
   );
 
+  // This also controls intensity of glow
+  moonModel.scene.children[0].material.color.r = 10;
+  moonModel.scene.children[0].material.color.g = 10;
+
+  // Iris is red
+  eyeBallModel.scene.children[0].children[0].children[0].children[0].children[0].material.color.r = 100;
+
   const directionalLight = new THREE.DirectionalLight("white", 1);
   scene.add(directionalLight);
 
   const renderer = new THREE.WebGLRenderer({ canvas });
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
   renderer.setClearColor("blue");
@@ -65,6 +72,17 @@ async function init(canvas: HTMLCanvasElement) {
 
   const composer = new EffectComposer(renderer);
 
+  const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    1.5,
+    0.4,
+    0.85
+  );
+  // Ths controls the intensity of the glow
+  bloomPass.threshold = 1;
+  bloomPass.strength = 0.8; //intensity of glow
+  bloomPass.radius = 0;
+
   const renderPass = new RenderPass(scene, camera);
   const badTVPass = new ShaderPass(BadTVShader);
   const staticPass = new ShaderPass(StaticShader);
@@ -74,6 +92,7 @@ async function init(canvas: HTMLCanvasElement) {
   composer.addPass(badTVPass);
   composer.addPass(staticPass);
   composer.addPass(filmPass);
+  composer.addPass(bloomPass);
 
   //set shader uniforms
   filmPass.uniforms.grayscale.value = 0;
