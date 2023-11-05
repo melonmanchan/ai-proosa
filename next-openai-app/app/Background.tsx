@@ -83,17 +83,17 @@ async function init(canvas: HTMLCanvasElement) {
   filmPass.uniforms["sIntensity"].value = 0.5;
   filmPass.uniforms["nIntensity"].value = 10;
 
-  camera.position.z = 1;
+  camera.position.z = 0;
   camera.position.x = 0;
-  camera.position.y = 5;
+  camera.position.y = 8;
 
   camera.updateProjectionMatrix();
 
   controls.update();
   controls.enableZoom = true;
 
-  const radius = 2.5; // Radius of the circle
-  const speed = 0.01; // Speed of rotation
+  const radius = 4; // Radius of the circle
+  const speed = 0.002; // Speed of rotation
 
   let angle = 0;
 
@@ -114,8 +114,8 @@ async function init(canvas: HTMLCanvasElement) {
     eyeBallModel.scene.position.x = radius * Math.cos(angle);
     eyeBallModel.scene.position.y = radius * Math.sin(angle);
 
-    eyeBallModel.scene.rotation.y += 0.01;
-    eyeBallModel.scene.rotation.z += Math.sin(delta * 0.2);
+    eyeBallModel.scene.rotation.y += 0.005;
+    eyeBallModel.scene.rotation.x += 0.001;
   };
 
   render();
