@@ -58,6 +58,15 @@ async function init(canvas: HTMLCanvasElement) {
   // Iris is red
   eyeBallModel.scene.children[0].children[0].children[0].children[0].children[0].material.color.r = 100;
 
+  eyeBallModel.scene.children[0].children[0].children[0].children[1].children[0].material.color.r = 5;
+  eyeBallModel.scene.children[0].children[0].children[0].children[1].children[0].material.color.g = 6;
+  eyeBallModel.scene.children[0].children[0].children[0].children[1].children[0].material.color.b = 6;
+
+  console.log(
+    eyeBallModel.scene.children[0].children[0].children[0].children[1]
+      .children[0].material
+  );
+
   const directionalLight = new THREE.DirectionalLight("white", 1);
   scene.add(directionalLight);
 
