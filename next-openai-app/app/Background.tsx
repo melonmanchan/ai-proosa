@@ -26,6 +26,10 @@ const textureLoader = new THREE.TextureLoader();
 const loader = new GLTFLoader();
 loader.setDRACOLoader(dracoLoader);
 
+function randomFloatInRange(min: number, max: number): number {
+  return Math.random() * (max - min) + min;
+}
+
 async function loadModel(filename: string) {
   const model = await loader.loadAsync(filename);
   return model;
@@ -40,7 +44,6 @@ async function init(canvas: HTMLCanvasElement) {
   ]);
 
   const bg = await textureLoader.loadAsync("./star-pattern.jpg");
-  console.log(bg);
   bg.wrapS = THREE.RepeatWrapping;
   bg.wrapT = THREE.RepeatWrapping;
 
@@ -145,6 +148,12 @@ async function init(canvas: HTMLCanvasElement) {
 
   let angle = 0;
   let moonAngle = 2;
+
+  moonModel.scene.rotation.y = randomFloatInRange(0, 2 * Math.PI);
+  moonModel.scene.rotation.x = randomFloatInRange(0, 2 * Math.PI);
+
+  eyeBallModel.scene.rotation.y = randomFloatInRange(0, 2 * Math.PI);
+  eyeBallModel.scene.rotation.x = randomFloatInRange(0, 2 * Math.PI);
 
   const render = function () {
     requestAnimationFrame(render);

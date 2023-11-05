@@ -25,17 +25,16 @@ export default function Chat() {
     ],
   });
 
-  //  useEffect(() => {
-  //    async function doSubmit() {
-  //      await reload();
-  //    }
-  //
-  //    doSubmit();
-  //  }, []);
-  //
+  useEffect(() => {
+    async function doSubmit() {
+      await reload();
+    }
+
+    doSubmit();
+  }, []);
 
   useEffect(() => {
-    window.addEventListener("click", (e) => {
+    window.addEventListener("click", () => {
       audioRef.current?.play();
     });
   }, []);
@@ -54,13 +53,13 @@ export default function Chat() {
       >
         <audio ref={audioRef} src="/output.mp3" autoPlay loop />
 
-        <div className="inline-flex flex-col w-full max-w-md py-24 mx-auto stretch justify-center">
+        <div
+          id="contents"
+          className="inline-flex flex-col w-full max-w-md py-24 mx-auto stretch justify-center"
+        >
           {filteredMessages.length > 0
             ? filteredMessages.map((m) => (
-                <div
-                  key={m.id}
-                  className="whitespace-pre-wrap text-yellow-300 overflow-auto"
-                >
+                <div key={m.id} className="whitespace-pre-wrap overflow-auto">
                   {m.content}
                 </div>
               ))
