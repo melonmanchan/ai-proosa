@@ -101,6 +101,8 @@ async function init(canvas: HTMLCanvasElement) {
     staticPass.uniforms["time"].value = delta;
     filmPass.uniforms["time"].value = delta;
 
+    eyeBallModel.scene.rotation.y += 0.01;
+    eyeBallModel.scene.rotation.z += Math.sin(delta * 0.5);
     composer.render(delta);
   };
 

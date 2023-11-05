@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tweenjs/tween.js": "^21.0.0",
     "ai": "2.2.20",
     "next": "13.4.12",
     "openai": "4.11.0",
