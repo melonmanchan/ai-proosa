@@ -45,3 +45,5 @@ To learn more about OpenAI, Next.js, and the Vercel AI SDK take a look at the fo
 
 Background image: Freepik.com
 <a href="https://www.freepik.com/free-vector/cute-stars-pattern-kids_2841791.htm#query=cartoon%20star%20background&position=2&from_view=keyword&track=ais">Image by starline</a> on Freepik
+
+Static sound: https://freesound.org/people/18hiltc/sounds/218793/

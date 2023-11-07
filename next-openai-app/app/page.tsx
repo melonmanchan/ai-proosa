@@ -2,7 +2,7 @@
 
 import { nanoid } from "ai";
 import { useChat } from "ai/react";
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 
 import Background from "./Background";
 
@@ -13,7 +13,8 @@ Olet luova tekoäly, jonka tarkoitus on kirjoittaa runoja.
 `;
 
 export default function Chat() {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const musicRef = useRef<HTMLAudioElement>(null);
+  const staticRef = useRef<HTMLAudioElement>(null);
   const [hasBeenClicked, setHasBeenClicked] = useState(false);
 
   const { messages, reload } = useChat({
@@ -26,12 +27,6 @@ export default function Chat() {
     ],
   });
 
-  useEffect(() => {
-    window.addEventListener("click", () => {
-      audioRef.current?.play();
-    });
-  }, []);
-
   const filteredMessages = messages.filter((m) => m.role === "assistant");
 
   return (
@@ -43,17 +38,20 @@ export default function Chat() {
             return;
           }
 
+          staticRef.current?.play();
+
           setTimeout(() => {
-            audioRef.current?.play();
+            musicRef.current?.play();
             reload();
 
             setHasBeenClicked(true);
 
             (window as any).hasBeenClicked = true;
-          }, 50);
+          }, 30);
         }}
       >
-        <audio ref={audioRef} src="/output.mp3" />
+        <audio ref={musicRef} src="/output.mp3" />
+        <audio ref={staticRef} src="/static.wav" />
 
         <div
           id="contents"
