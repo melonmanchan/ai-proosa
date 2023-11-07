@@ -43,11 +43,12 @@ async function init(canvas: HTMLCanvasElement) {
     loadModel("./kuu2.glb"),
   ]);
 
-  const bg = await textureLoader.loadAsync("./star-pattern.jpg");
+  const bg = await textureLoader.loadAsync("./star-pattern-2.jpg");
+
+  bg.repeat.set(2, 1); // Adjust the tiling by changing the values (here: 2x2)
 
   bg.wrapS = THREE.RepeatWrapping;
   bg.wrapT = THREE.RepeatWrapping;
-  bg.repeat.set(2, 1); // Adjust the tiling by changing the values (here: 2x2)
 
   const starMaterial = new THREE.MeshBasicMaterial({ map: bg });
 
