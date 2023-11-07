@@ -2,7 +2,7 @@
 
 import { nanoid } from "ai";
 import { useChat } from "ai/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import Background from "./Background";
 
@@ -14,6 +14,7 @@ Olet luova tekoäly, jonka tarkoitus on kirjoittaa runoja.
 
 export default function Chat() {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [hasBeenClicked, setHasBeenClicked] = useState(false);
 
   const { messages, reload } = useChat({
     initialMessages: [
@@ -24,14 +25,6 @@ export default function Chat() {
       },
     ],
   });
-
-  useEffect(() => {
-    async function doSubmit() {
-      await reload();
-    }
-
-    doSubmit();
-  }, []);
 
   useEffect(() => {
     window.addEventListener("click", () => {
@@ -46,17 +39,32 @@ export default function Chat() {
       <div
         className="h-screen	w-screen flex justify-center	align-center"
         onClick={() => {
-          if (audioRef.current?.paused) {
-            audioRef.current?.play();
+          if (hasBeenClicked) {
+            return;
           }
+
+          setTimeout(() => {
+            audioRef.current?.play();
+            reload();
+
+            setHasBeenClicked(true);
+
+            (window as any).hasBeenClicked = true;
+          }, 50);
         }}
       >
-        <audio ref={audioRef} src="/output.mp3" autoPlay loop />
+        <audio ref={audioRef} src="/output.mp3" />
 
         <div
           id="contents"
           className="inline-flex flex-col w-full max-w-md py-24 mx-auto stretch justify-center"
         >
+          {hasBeenClicked ? null : (
+            <div id="active-prompt" className="text-2xl text-center">
+              Klikkaa aloittaaksesi...
+            </div>
+          )}
+
           {filteredMessages.length > 0
             ? filteredMessages.map((m) => (
                 <div key={m.id} className="whitespace-pre-wrap overflow-auto">

@@ -131,7 +131,7 @@ async function init(canvas: HTMLCanvasElement) {
   composer.addPass(bloomPass);
 
   //set shader uniforms
-  filmPass.uniforms.grayscale.value = 0;
+  filmPass.uniforms.grayscale.value = 1;
   // Initialize tv shader parameters
   badTVPass.renderToScreen = true;
   badTVPass.uniforms["distortion"].value = 0;
@@ -167,8 +167,24 @@ async function init(canvas: HTMLCanvasElement) {
   eyeBallModel.scene.rotation.y = randomFloatInRange(0, 2 * Math.PI);
   eyeBallModel.scene.rotation.x = randomFloatInRange(0, 2 * Math.PI);
 
+  let currentState: "INTRO" | "ACTIVE" = "INTRO";
+
+  // by default nothing is visible
+  eyeBallModel.scene.visible = false;
+  moonModel.scene.visible = false;
+  plane.visible = false;
+
   const render = function () {
     requestAnimationFrame(render);
+
+    if ((window as any).hasBeenClicked && currentState === "INTRO") {
+      eyeBallModel.scene.visible = true;
+      moonModel.scene.visible = true;
+      plane.visible = true;
+      filmPass.uniforms.grayscale.value = 0;
+      currentState = "ACTIVE";
+    }
+
     const delta = clock.getDelta();
 
     composer.render(delta);
