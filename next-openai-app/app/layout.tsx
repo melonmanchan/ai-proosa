@@ -1,4 +1,4 @@
-import "./globals.css";
+import "./globals.scss";
 import { Press_Start_2P } from "next/font/google";
 
 const font = Press_Start_2P({ weight: "400", subsets: [] });
