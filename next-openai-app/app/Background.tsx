@@ -44,13 +44,24 @@ async function init(canvas: HTMLCanvasElement) {
   ]);
 
   const bg = await textureLoader.loadAsync("./star-pattern.jpg");
+
   bg.wrapS = THREE.RepeatWrapping;
   bg.wrapT = THREE.RepeatWrapping;
+  bg.repeat.set(2, 1); // Adjust the tiling by changing the values (here: 2x2)
 
+  const starMaterial = new THREE.MeshBasicMaterial({ map: bg });
+
+  const planeGeometry = new THREE.PlaneGeometry(35, 20); // You can adjust the size as needed
+
+  const plane = new THREE.Mesh(planeGeometry, starMaterial);
+
+  plane.rotateX(-Math.PI / 2);
+  plane.material.side = THREE.DoubleSide;
+
+  plane.position.y = -5;
   const scene = new THREE.Scene();
 
-  scene.background = bg;
-
+  scene.add(plane);
   eyeBallModel.scene.scale.set(0.01, 0.01, 0.01);
 
   eyeBallModel.scene.rotation.x = Math.PI / 2;
