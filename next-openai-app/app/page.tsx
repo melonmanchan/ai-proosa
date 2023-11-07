@@ -25,6 +25,14 @@ export default function Chat() {
         content: initialPrompt,
       },
     ],
+
+    onFinish: () => {
+      setTimeout(() => {
+        (window as any).hasBeenClicked = false;
+        musicRef.current?.pause();
+        staticRef.current?.play();
+      }, 5000);
+    },
   });
 
   const filteredMessages = messages.filter((m) => m.role === "assistant");

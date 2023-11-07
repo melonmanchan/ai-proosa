@@ -59,7 +59,7 @@ async function init(canvas: HTMLCanvasElement) {
   plane.rotateX(-Math.PI / 2);
   plane.material.side = THREE.DoubleSide;
 
-  plane.position.y = -5;
+  plane.position.y = -6;
   const scene = new THREE.Scene();
 
   scene.add(plane);
@@ -177,12 +177,20 @@ async function init(canvas: HTMLCanvasElement) {
   const render = function () {
     requestAnimationFrame(render);
 
-    if ((window as any).hasBeenClicked && currentState === "INTRO") {
+    if ((window as any).hasBeenClicked === true && currentState === "INTRO") {
       eyeBallModel.scene.visible = true;
       moonModel.scene.visible = true;
       plane.visible = true;
       filmPass.uniforms.grayscale.value = 0;
       currentState = "ACTIVE";
+    }
+
+    if ((window as any).hasBeenClicked === false && currentState === "ACTIVE") {
+      eyeBallModel.scene.visible = false;
+      moonModel.scene.visible = false;
+      plane.visible = false;
+      filmPass.uniforms.grayscale.value = 1;
+      currentState = "INTRO";
     }
 
     const delta = clock.getDelta();
