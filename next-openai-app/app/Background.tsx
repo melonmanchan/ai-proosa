@@ -137,7 +137,7 @@ async function init(canvas: HTMLCanvasElement) {
   badTVPass.uniforms["distortion"].value = 0;
   badTVPass.uniforms["distortion2"].value = 0;
   badTVPass.uniforms["speed"].value = 0.01;
-  badTVPass.uniforms["rollSpeed"].value = 0;
+  badTVPass.uniforms["rollSpeed"].value = 0.1;
 
   staticPass.uniforms["amount"].value = 0.05;
   staticPass.uniforms["size"].value = 5;

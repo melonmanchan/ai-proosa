@@ -7,9 +7,10 @@ import { useState, useRef } from "react";
 import Background from "./Background";
 
 const initialPrompt = `
-Olet luova tekoäly, jonka tarkoitus on kirjoittaa runoja.
+  Olet luova tekoäly, jonka tarkoitus on kirjoittaa runoja.
   Tehtävänäsi on kirjoittaa proosaruno. Runon logiikka on assosiatiivista, absurdia ja unenomaista ja se saa sisältää tarinallisia elementtejä.
-  Runon ei tarvitse olla mittaan kirjoitettu. Käytä mielikuvitustasi ja anna runon viedä sinua. Pidä runo kuitenkin kohtuullisen lyhyenä ja ytimekkäänä.
+  Runon ei tarvitse olla mittaan kirjoitettu. Käytä mielikuvitustasi ja anna runon viedä sinua. Voit hyödyntää rytmiä ja melodiaa.
+  Pidä runo kohtuullisen lyhyenä ja ytimekkäänä.
 `;
 
 export default function Chat() {
